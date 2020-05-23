@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DemoApp.Services;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using SendEmail.Model;
+using SendEmail.Services;
 
 namespace DemoApp.Controllers
 {
@@ -9,20 +9,22 @@ namespace DemoApp.Controllers
     [Route("[controller]")]
     public class SendEmailController : ControllerBase
     {
-        private SendEmailService _emailService;
+        private IServiceSendEmail _emailService;
+        private readonly ILogger _logger;
 
-        public SendEmailController(SendEmailService emailService)
+        public SendEmailController(IServiceSendEmail emailService, ILogger<SendEmailController> logger)
         {
             _emailService = emailService;
+            _logger = logger;
         }
 
         [HttpGet]
         public string Get() => "OK";
 
-        [HttpPost("sendEmail")]
+        [HttpPost("sendemail")]
         public void SendEmail(ConfigurationEmail email)
         {
-            _emailService.SendEmailAsync(email);
-        } 
+            _emailService.SendEmailAsync(email, _logger);
+        }
     }
 }

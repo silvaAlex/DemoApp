@@ -23,8 +23,8 @@ namespace SendEmail.Services
         /// <summary>
         /// Semaforo binario para execução de um envio por vez
         /// </summary>
-        private Semaphore _semaphore = new Semaphore(1,1);
-        readonly EmailSettings _emailSettings;
+        private Semaphore _semaphore = new Semaphore(1, 1);
+        readonly ConfigurationEmail.EmailSettings _emailSettings;
         private ILogger _logger;
 
         /// <summary>
@@ -35,12 +35,12 @@ namespace SendEmail.Services
         /// <summary>
         /// Estrutura temporaria para envio de email
         /// </summary>
-        public AuthMessageSender(IOptions<EmailSettings> emailSettings)
+        public AuthMessageSender(IOptions<ConfigurationEmail.EmailSettings> emailSettings)
         {
             _emailSettings = emailSettings.Value;
         }
 
-        public void SendEmailAsync(ConfigurationEmail email,ILogger logger)
+        public void SendEmailAsync(ConfigurationEmail email, ILogger logger)
         {
             _logger = logger;
             Execute(email);
@@ -52,7 +52,6 @@ namespace SendEmail.Services
             _logger = logger;
             Execute(email);
         }
-
 
         void Execute(ConfigurationEmail email)
         {
